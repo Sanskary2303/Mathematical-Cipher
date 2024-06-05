@@ -1,0 +1,70 @@
+                                                 PROJECT : MATHEMATICAL CYPHERS 
+
+                                                         Assignment-1
+
+Q-1 :   (a) In shift cypher the encryption is done by shifting all the characters of a message by k spaces . 
+            Note : Although the key k may be any integer , but the net effect is for only 26 values of k because k and k+26 give the same   	    encrypted message and hence we consider only 0<=k<=25 . 
+                          P( M=m | C = c ) = 1/26 , since only 26 choices of keys are there and one of the keys will give the correct 	  	                  message. 
+			On the contray , P(M = m ) = 1/26^n where n is number of characters excluding spaces in the message 
+            Therefore this encryption is perfectly secret only if the length of the message is 1 , else it is not perfectly secret for 		lengths greater than 1 which is the usual case . 
+       
+        (b) Just increasig the range of key won't bring any change as net shifting is for k = 0 to k=25 only .
+            Let the number of characters in the message to be encrypted(say m) excluding the spaces is n , let us use of key of length 2*n
+            What I propose is that we use n randomied keys and concatenate them and use it as a single key , i.e. , we are using a   	 	    different key for each letter to be encrypted , this follows from the answer of part (a) where I concluded that shift cypher 
+            is perfectly secret if we use a single letter in the message , therefore if we use a different randomized key for each letter 
+            then we will get a perfectly secret encryption using only shift cypher . 
+            eg: m = life , k = 08132400
+                  Here we can partition the key into groups of 2 to get 4(n=4) keys , namely 8  , 13 , 24 , 0 and then apply this to   	  	     characters l , i , f ,e  respectively to get encrypted message . Note that in case key consists of single digit we must add 0 	    before it to maintain the consistency of the encryption and length od the key as 2*n .
+
+Q-2 :   (a)
+        My code has 2 functions , the first one names Enc(m,k) takes message m and key k as inputs and uses shift cypher to encypt the   
+        function . The second function takes an encrypted message as input and uses all possible keys to generate the message . It uses the 
+        fact that although k can have any integer value , we take %26 to keep characters in range of a to z , and hence key k and k+26 will 
+        give the same decrypted message . 
+             
+#Code starts 
+
+#Encryption function takes as input a message and a key value .
+#It encrypts the message using Caesar cypher
+def Enc(m, k):
+    encrypted_message = ""
+    for char in m:
+        if char == ' ':
+            encrypted_message += " "
+        else:
+            encrypted_char = chr(((ord(char) - ord('a') + int(k)) % 26) + ord('a'))
+            encrypted_message += encrypted_char
+    return encrypted_message
+
+
+def All_Possible_Messages(code):
+  for i in range (25) :
+    decrypted_message = ""
+    for char in code:
+        if char == ' ':
+            decrypted_message += " "
+        else:
+            decrypted_char = chr(((ord(char) - ord('a') - int(i+1)) % 26) + ord('a'))
+            decrypted_message += decrypted_char
+    print("For key " , i+1 , "the decrypted message is :" , decrypted_message )
+
+
+#take input
+m = input("Hey user! Enter the message you want to encrypt.\n")
+k = input("Enter the secret key...\n")
+ENCRYPTED_MESSAGE = Enc(m, k)
+print("Your encrypted message is:", ENCRYPTED_MESSAGE)
+
+#Generate all possible messages for all randomized keys
+Code_message = input("Enter the message you want to decrypt\n")
+All_Possible_Messages(Code_message)
+#Code finished 
+
+The encrypted messages are : 
+(i) rrct rb knccna cqjw rrcm jwm rrck
+(ii) kdsr kdzqm bqxosnfqzogx
+
+
+(b) The most probable original messages are : 
+     (i) it was damn easy again 
+     (ii) it was damn easy 
